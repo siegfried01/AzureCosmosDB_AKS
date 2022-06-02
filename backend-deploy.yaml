@@ -27,6 +27,6 @@ spec:
               name: http
           env:
             - name: DATABASE_MONGODB_URI
-              value: "mongodb://contoso-ship-manager-32489:zw2L8wYjLIhcolfZvza1B78EURjIwEwfAiZtnApvpDkxFtYlrw4U5y4LscoHAY9QSSviILDJvaXpFqrClsO5BQ==@contoso-ship-manager-32489.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@contoso-ship-manager-32489@"
+              value: "mongodb://contoso-ship-manager-32489:xxxxxxx=@contoso-ship-manager-32489@"
             - name: DATABASE_MONGODB_DBNAME
               value: ship_manager

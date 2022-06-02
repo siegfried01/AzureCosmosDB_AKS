@@ -47,6 +47,38 @@ nano backend-deploy.yaml
 ```
 2. Copy the content to backend-deploy.yaml.
 ```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ship-manager-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ship-manager-backend
+  template:
+    metadata:
+      labels:
+        app: ship-manager-backend
+    spec:
+      containers:
+        - image: mcr.microsoft.com/mslearn/samples/contoso-ship-manager:backend
+          name: ship-manager-backend
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: DATABASE_MONGODB_URI
+              value: "mongodb://contoso-ship-manager-32489:xxxxxxx=@contoso-ship-manager-32489@"
+            - name: DATABASE_MONGODB_DBNAME
+              value: ship_manager
 ```
 3.
 az cosmosdb keys list --type connection-strings -g $RESOURCE_GROUP -n $COSMOSDB_ACCOUNT_NAME --query "connectionStrings[0].connectionString" -o tsv
