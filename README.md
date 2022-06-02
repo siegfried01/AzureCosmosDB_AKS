@@ -144,13 +144,62 @@ kubectl get ingress
 ```bash
 nano frontend-deploy.yaml
 ```
-2. Copy the contents below to frontend-deploy.yaml.
+2. Copy the contents below to frontend-deploy.yaml. Replace the YOUR_BACKEND_URL placeholder with the URL of the back-end API that you just put in the ingress in the previous step, adding http:// in front of it.
 ```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ship-manager-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ship-manager-frontend
+  template:
+    metadata:
+      labels:
+        app: ship-manager-frontend
+    spec:
+      containers:
+        - image: mcr.microsoft.com/mslearn/samples/contoso-ship-manager:frontend
+          name: ship-manager-frontend
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: /usr/src/app/dist/config.js
+              subPath: config.js
+      volumes:
+        - name: config
+          configMap:
+            name: frontend-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  config.js: |
+    const config = (() => {
+      return {
+        'VUE_APP_BACKEND_BASE_URL': 'http://ship-manager-backend.d1fc0e0bded44fcb84ce.eastasia.aksapp.io',
+      }
+    })()
 ```
 
-http://ship-manager-backend.d1fc0e0bded44fcb84ce.eastasia.aksapp.io
-
+3. Apply frontend-deploy.yaml.
+```bash
 kubectl apply -f frontend-deploy.yaml
+```
 
 nano frontend-network.yaml
 
