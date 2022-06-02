@@ -204,15 +204,49 @@ kubectl apply -f frontend-deploy.yaml
 ```bash
 nano frontend-network.yaml
 ```
-
+5. Copy the contents below to frontend-network.yaml.
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: ship-manager-frontend
+spec:
+  selector:
+    app: ship-manager-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ship-manager-frontend
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: contoso-ship-manager.DNS_ZONE
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ship-manager-frontend
+                port:
+                  number: 80
+```
+6. Replace the DNS_ZONE placeholder with your cluster DNS zone. You can get that information by command.
+```bash
 az aks show -g $RESOURCE_GROUP -n $AKS_CLUSTER_NAME -o tsv --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
-
-d1fc0e0bded44fcb84ce.eastasia.aksapp.io
-
+```
+7. Apply the froent-network.yaml.
+```bash
 kubectl apply -f frontend-network.yaml
-
+```
+8. Check the status of the DNS zone by querying Kubernetes for the available ingresses.
+```bash
 kubectl get ingress
-
-
-
-
+```
+9. You can now access the URL from the ingress resource's host name to enter the ship manager application.
