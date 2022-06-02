@@ -93,6 +93,38 @@ kubectl apply -f backend-deploy.yaml
 nano backend-network.yaml
 ```
 6. Copy the contents below to backend-network.yaml.
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: ship-manager-backend
+spec:
+  selector:
+    app: ship-manager-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ship-manager-backend
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: ship-manager-backend.DNS_ZONE
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ship-manager-backend
+                port:
+                  number: 80
+```
 
 az aks show -g $RESOURCE_GROUP -n $AKS_CLUSTER_NAME -o tsv --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
 
