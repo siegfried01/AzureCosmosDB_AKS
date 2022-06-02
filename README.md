@@ -125,18 +125,28 @@ spec:
                 port:
                   number: 80
 ```
-
+7. Replace the DNS_ZONE placeholder with your cluster DNS zone by AKS command:
+```bash
 az aks show -g $RESOURCE_GROUP -n $AKS_CLUSTER_NAME -o tsv --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
-
-d1fc0e0bded44fcb84ce.eastasia.aksapp.io
-
+```
+8. Apply the backend-network.yaml file.
+```bash
 kubectl apply -f backend-network.yaml
-
+```
+9. Check the status of the DNS zone.
+```bash
 kubectl get ingress
+```
 
 ## Deploy the front-end interface
 
+1. Create a new file called frontend-deploy.yaml.
+```bash
 nano frontend-deploy.yaml
+```
+2. Copy the contents below to frontend-deploy.yaml.
+```bash
+```
 
 http://ship-manager-backend.d1fc0e0bded44fcb84ce.eastasia.aksapp.io
 
