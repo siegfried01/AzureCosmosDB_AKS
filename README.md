@@ -45,7 +45,7 @@ kubectl get nodes
 ```bash
 nano backend-deploy.yaml
 ```
-2. Copy the content to backend-deploy.yaml.
+2. Copy the contents below to backend-deploy.yaml.
 ```bash
 apiVersion: apps/v1
 kind: Deployment
@@ -84,10 +84,15 @@ spec:
 ```bash
 az cosmosdb keys list --type connection-strings -g $RESOURCE_GROUP -n $COSMOSDB_ACCOUNT_NAME --query "connectionStrings[0].connectionString" -o tsv
 ```
-
+4. Apply the file.
+```bash
 kubectl apply -f backend-deploy.yaml
-
+```
+5. To make this application available to everyone, you'll need to create a service and an ingress.
+```bash
 nano backend-network.yaml
+```
+6. Copy the contents below to backend-network.yaml.
 
 az aks show -g $RESOURCE_GROUP -n $AKS_CLUSTER_NAME -o tsv --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
 
