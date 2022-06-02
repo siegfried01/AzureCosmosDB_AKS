@@ -200,8 +200,10 @@ data:
 ```bash
 kubectl apply -f frontend-deploy.yaml
 ```
-
+4. Create a new file called frontend-network.yaml.
+```bash
 nano frontend-network.yaml
+```
 
 az aks show -g $RESOURCE_GROUP -n $AKS_CLUSTER_NAME -o tsv --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
 
