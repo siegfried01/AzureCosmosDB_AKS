@@ -18,7 +18,7 @@ metadata:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-    - host: contoso-ship-manager.d1fc0e0bded44fcb84ce.eastasia.aksapp.io
+    - host: contoso-ship-manager.xxxxxxxx.eastasia.aksapp.io
       http:
         paths:
           - path: /
